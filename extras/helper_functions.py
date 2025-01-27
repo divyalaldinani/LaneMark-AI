@@ -4,6 +4,7 @@ import matplotlib.image as mpimg
 import random
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import numpy as np
 
 # Unzip folder in case the dataset in in the form of Zipped folder
 def unzip_folder(folder_path):
@@ -26,6 +27,28 @@ def view_random_image(class_names, directory):
     plt.imshow(img)
     plt.title(f"Original class: {target_class}")
     plt.axis(False)
+
+
+def plot_loss_curves(history):
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+    epochs = np.arange(len(loss))
+
+    accuracy = history.history['accuracy']
+    val_accuracy = history.history['val_accuracy']
+    plt.plot(epochs, loss, label = 'training loss')
+    plt.plot(epochs, val_loss, label = 'validation loss')
+    plt.title('Loss Curves')
+    plt.xlabel('Epochs')
+    plt.legend()
+    plt.show()
+
+    plt.plot(epochs, accuracy, label = 'Training accuracy')
+    plt.plot(epochs, val_accuracy, label = 'Validation accuracy')
+    plt.title('Accuracy curves')
+    plt.xlabel('Epochs')
+    plt.legend()
+    plt.show()
 
 
 
