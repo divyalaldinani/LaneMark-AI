@@ -5,6 +5,7 @@ import random
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
+import datetime
 
 # Unzip folder in case the dataset in in the form of Zipped folder
 def unzip_folder(folder_path):
@@ -89,3 +90,10 @@ def view_predicted_org_and_org_masked_image(directory, model):
     plt.axis('off')
     plt.tight_layout()
     plt.show()
+
+
+def create_tensorboard_callback1(dir_name, exp_name):
+    log_dir = dir_name + '/' + exp_name + '/' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir = log_dir)
+    print(f"Saving TensorBoard log files to : {log_dir}")
+    return tensorboard_callback
