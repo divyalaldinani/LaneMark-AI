@@ -3,6 +3,7 @@ import os
 import matplotlib.image as mpimg
 import random
 import matplotlib.pyplot as plt
+import tensorflow as tf
 
 # Unzip folder in case the dataset in in the form of Zipped folder
 def unzip_folder(folder_path):
@@ -25,3 +26,43 @@ def view_random_image(class_names, directory):
     plt.imshow(img)
     plt.title(f"Original class: {target_class}")
     plt.axis(False)
+
+
+
+def preprocess_image(image_path):
+    img = mpimg.imread(image_path)
+    img = tf.image.resize(img, (224, 224))
+    img /= 255.
+    img = tf.expand_dims(img, axis=0)
+    return img
+
+def view_predicted_org_and_org_masked_image(directory, model):
+    image_name = random.choice(os.listdir(os.path.join(directory, 'frames')))
+    image_path = os.path.join(directory, 'frames', image_name)
+    image = preprocess_image(image_path)
+    plt.figure(figsize=(20, 10))
+
+    
+    plt.subplot(1, 3, 1)
+    org_image = mpimg.imread(image_path)
+    plt.imshow(org_image)
+    plt.title('Original Image')
+    plt.axis('off')
+
+
+    plt.subplot(1, 3, 2)
+    org_mask_path = os.path.join(directory, 'lane-masks', image_name)
+    org_mask = mpimg.imread(org_mask_path)
+    plt.imshow(org_mask)
+    plt.title('Original Masked Image')
+    plt.axis('off')
+
+    plt.subplot(1, 3, 3)
+    predicted_mask = model.predict(image)
+    predicted_mask = tf.image.resize(predicted_mask, (720, 1280))
+    predicted_mask = tf.squeeze(predicted_mask, axis = 0)
+    plt.imshow(predicted_mask, cmap='grey')
+    plt.title('Predicted Masked Image')
+    plt.axis('off')
+    plt.tight_layout()
+    plt.show()
