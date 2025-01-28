@@ -26,7 +26,7 @@ def view_random_image(class_names, directory):
     random_image_path = target_dir + '/' + random_image
     img = mpimg.imread(random_image_path)
     plt.imshow(img)
-    plt.title(f"Original class: {target_class}")
+    # plt.title(f"Original class: {target_class}")
     plt.axis(False)
 
 
